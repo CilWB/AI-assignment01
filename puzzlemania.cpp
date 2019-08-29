@@ -89,43 +89,25 @@ int BFS(position nnow,position goal){
 			}
 			cout << "--------------------------\n";	
 			
-			
-			
-			if(mapp[now.x][now.y]=='T'){
-//						for(int i = 0 ; i <= now.step ; i++)
-//							cout << now.act[i];
-						now.act[now.step] = '\0';
-						printf("%s",now.act);
-						cout << "\nFOUND GOALLLL!!!!\n";
-						return 1;
-					}
-			
-			
 			for(int i = 0 ; i < 4 ; i++){
 				if(went[now.x+direction[i][0]][now.y+direction[i][1]]==0)
 				if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='.'
 				||mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
 //					cout << "Add " << now.x+direction[i][0] << " " << now.y+direction[i][1] << endl;
 					
-				
-					
-					
-					
-					
-					
-//					if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
-//						for(int i = 0 ; i <= now.step ; i++)
-//							cout << now.act[i];
-//						cout << "\nFOUND GOALLLL!!!!\n";
-//						return 1;
-//					}
-//					else{
+					if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
+						for(int i = 0 ; i <= now.step ; i++)
+							cout << now.act[i];
+						cout << "\nFOUND GOALLLL!!!!\n";
+						return 1;
+					}
+					else{
 						position temp;
 						temp.x = now.x+direction[i][0];
 						temp.y = now.y+direction[i][1];
 						temp.act[temp.step++] = '0'+i;
 						que.push(temp);
-//					}
+					}
 				}
 				
 			}
