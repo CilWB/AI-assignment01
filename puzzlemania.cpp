@@ -22,7 +22,7 @@ int main(){
 	getIn();
 	showMap();
 	getPosition();
-	BFS(start,goal);
+	cout << "BFS " << BFS(start,goal);
 	return 0;
 }
 /////////////////////////////////////
@@ -80,21 +80,21 @@ int BFS(position nnow,position goal){
 			que.pop();
 			went[now.x][now.y] = 1;
 			
-			cout << "--------------------------\n";
-			for(int x = 0 ; x < MAPHEIGHT;x++){
-				for(int j = 0 ; j < MAPLENGTH ; j++){
-					cout << char(went[x][j]+'0');
-				}
-				cout << endl;
-			}
-			cout << "--------------------------\n";	
-			
 			for(int i = 0 ; i < 4 ; i++){
 				if(went[now.x+direction[i][0]][now.y+direction[i][1]]==0)
 				if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='.'
 				||mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
 //					cout << "Add " << now.x+direction[i][0] << " " << now.y+direction[i][1] << endl;
-					
+				
+					cout << "--------------------------\n";
+					for(int x = 0 ; x < MAPHEIGHT;x++){
+						for(int j = 0 ; j < MAPLENGTH ; j++){
+							cout << char(went[x][j]+'0');
+						}
+						cout << endl;
+					}
+					cout << "--------------------------\n";	
+				
 					if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
 						for(int i = 0 ; i <= now.step ; i++)
 							cout << now.act[i];
@@ -102,12 +102,13 @@ int BFS(position nnow,position goal){
 						return 1;
 					}
 					else{
-						position temp;
+						position temp = now;
 						temp.x = now.x+direction[i][0];
 						temp.y = now.y+direction[i][1];
 						temp.act[temp.step++] = '0'+i;
 						que.push(temp);
 					}
+					
 				}
 				
 			}
@@ -135,3 +136,5 @@ int BFS(position nnow,position goal){
 #.........#
 ###########
 */
+
+
