@@ -11,6 +11,11 @@ typedef struct po{
 position goal,now,start;
 queue<position>que;
 int direction[4][2] = {{0,-1},{1,0},{0,1},{-1,0}};
+// 0-> w
+// 1-> s
+// 2-> e
+// 3-> n
+char ccc[5] = "wsen";
 
 char mapp[MAPHEIGHT][MAPLENGTH];
 void getIn();
@@ -105,7 +110,8 @@ int BFS(position nnow,position goal){
 						position temp = now;
 						temp.x = now.x+direction[i][0];
 						temp.y = now.y+direction[i][1];
-						temp.act[temp.step++] = '0'+i;
+						if(i==0)
+						temp.act[temp.step++] = ccc[i];
 						que.push(temp);
 					}
 					
@@ -136,5 +142,8 @@ int BFS(position nnow,position goal){
 #.........#
 ###########
 */
-
+// 0-> w
+// 1-> s
+// 2-> e
+// 3-> n
 
