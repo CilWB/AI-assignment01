@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
-#define MAPHEIGHT 7
-#define MAPLENGTH 11
+#define MAPHEIGHT 20
+#define MAPLENGTH 20
 
 using namespace std;
  
@@ -10,6 +10,7 @@ typedef struct po{
 }position;
 position goal,now,start;
 queue<position>que;
+int r,c;
 int direction[4][2] = {{0,-1},{1,0},{0,1},{-1,0}};
 // 0-> w
 // 1-> s
@@ -35,15 +36,24 @@ int main(){
 /////////////////////////////////////
 
 void getIn(){
-	for(int i = 0; i < MAPHEIGHT ; i++){
-		scanf(" %[^\n]s",mapp[i]);
+	
+	cin >> r >> c ;
+	for(int i = 0 ; i < r ; i++){
+		for(int j = 0 ; j < c ;j++){
+			scanf(" %c",&mapp[i][j]);
+		}
 	}
+	
+//	for(int i = 0; i < MAPHEIGHT ; i++){
+//		for(int j = 0 ; j < )
+//		scanf(" %[^\n]s",mapp[i]);
+//	}
 //	mapp = "############T##......##.#.#..#####....B...S##.######..##.........############";	
 }
 void showMap(){
-	cout << "--------------------------\n";
-	for(int i = 0 ; i < MAPHEIGHT;i++){
-		for(int j = 0 ; j < MAPLENGTH ; j++){
+	cout << "------------show map--------------\n";
+	for(int i = 0 ; i < r;i++){
+		for(int j = 0 ; j < c ; j++){
 			cout << mapp[i][j];
 		}
 		cout << endl;
@@ -91,14 +101,14 @@ int BFS(position nnow,position goal){
 				||mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
 //					cout << "Add " << now.x+direction[i][0] << " " << now.y+direction[i][1] << endl;
 				
-					cout << "--------------------------\n";
-					for(int x = 0 ; x < MAPHEIGHT;x++){
-						for(int j = 0 ; j < MAPLENGTH ; j++){
-							cout << char(went[x][j]+'0');
-						}
-						cout << endl;
-					}
-					cout << "--------------------------\n";	
+//					cout << "--------------------------\n";
+//					for(int x = 0 ; x < MAPHEIGHT;x++){
+//						for(int j = 0 ; j < MAPLENGTH ; j++){
+//							cout << char(went[x][j]+'0');
+//						}
+//						cout << endl;
+//					}
+//					cout << "--------------------------\n";	
 				
 					if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
 						for(int i = 0 ; i <= now.step ; i++)
@@ -107,11 +117,12 @@ int BFS(position nnow,position goal){
 						return 1;
 					}
 					else{
-						position temp = now;
+//						cout << i << endl;
+						position temp=now;
 						temp.x = now.x+direction[i][0];
 						temp.y = now.y+direction[i][1];
-						if(i==0)
 						temp.act[temp.step++] = ccc[i];
+						
 						que.push(temp);
 					}
 					
@@ -135,8 +146,8 @@ int BFS(position nnow,position goal){
 
 7 11
 ###########
-#.##......#
-#T#.#..####
+#.##.....T#
+#.#.#..####
 #....B...S#
 #.######..#
 #.........#
