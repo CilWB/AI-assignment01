@@ -6,8 +6,8 @@ using namespace std;
  
 typedef struct po{
 	int x,y,step;
-	char act[100];
-	char stage[20][20];
+	int Br,Bc;
+	char act[50];
 }position;
 position goal,now,start;
 queue<position>que;
@@ -27,13 +27,14 @@ void getPosition();
 void showWent();
 void showStage(position);
 bool inBound();
+bool checkLoop4(position);
 int BFS(position,position);
 
 int main(){
 //	cout << "welcome back CXz." << endl;
 	getIn();
-	showMap();
 	getPosition();
+//	showMap();
 //	showStage(start);
 	cout << "BFS " << BFS(start,goal);
 	return 0;
@@ -71,9 +72,9 @@ void getPosition(){
 	cout << "-------------USE getPosition\n";
 	for(int i = 0 ; i < r;i++){
 		for(int j = 0 ; j < c ; j++){
-			if(mapp[i][j]=='T') goal.x = i , goal.y = j;
-			else if(mapp[i][j]=='S') start.x = i, start.y = j;
-			start.stage[i][j] = mapp[i][j];
+			if(mapp[i][j]=='T') goal.x = i , goal.y = j,mapp[i][j]='.';
+			else if(mapp[i][j]=='S') start.x = i, start.y = j,mapp[i][j]='.';
+			else if(mapp[i][j]=='B') start.Br = i,start.Bc = j,mapp[i][j]='.';
 		}
 	}
 	start.step = 0;
@@ -81,6 +82,9 @@ void getPosition(){
 	cout << "\ty: " << goal.y << endl;
 	cout << "now start:\n\tx: "<< start.x << endl;
 	cout << "\ty: " << start.y << endl;
+	cout << "now box:\n\tBr: "<< start.Br << endl;
+	cout << "\tBc: " << start.Bc << endl;
+	
 	cout << "-------------END getPosition\n";
 	
 }
@@ -97,12 +101,18 @@ void showWent(){
 void showStage(position x){
 	
 	cout << "--------------------------showStage\n";
-	for(int i = 0 ; i < r;i++){
+	for(int i = 0 ;i < r ; i++){
 		for(int j = 0 ; j < c ; j++){
-			cout << x.stage[i][j];
+			if(x.Br==i&&x.Bc==j) cout << 'B';
+			else if(x.x==i&&x.y==j) cout << 'S';
+			else if(goal.x==i&&goal.y==j) cout <<'T';
+			else cout<<mapp[i][j];
 		}
 		cout << endl;
 	}
+	for(int i = 0 ; i < x.step ; i++)
+		cout<< x.act[i];
+	cout << endl;
 	cout << "--------------------------\n";	
 }
 bool inBound(){
@@ -111,16 +121,15 @@ bool inBound(){
 bool checkBox(position n){
 	
 }
+bool checkLoop4(position n){
+	return (n.act[n.step-1]+n.act[n.step-2]+n.act[n.step-3]+n.act[n.step-4])==('n'+'s'+'w'+'e');
+}
 int BFS(position nnow,position goal){
 //	cout << "welcome to BFS\n";
 	que.push(nnow); // add a start state
 	if(start.x == goal.x && start.y == goal.y){
 		return 0;
 	}
-	 
-//	for(int i = 0 ; i< r;i++)
-//		for(int j = 0 ; j <c;j++)
-//			went[i][j] = 0;
 	while(1){
 		if(que.empty()){
 			return -1;	
@@ -128,37 +137,23 @@ int BFS(position nnow,position goal){
 		else{
 			position now = que.front();
 			que.pop();
-//			went[now.x][now.y] = 1;
 			
 			for(int i = 0 ; i < 4 ; i++){
-//				if(now.step==0 || now.stage[now.x+direction[i][0]][now.y+direction[i][1]]!='S')
-				
 				if(now.step==0 || (now.act[now.step-1] != zzz[i]))
-				if(now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='.'
-				||now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='T'
-				||now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='B'
-				||now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='S'){
-//					showWent();
-					
+				if(now.step<50)
+				if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]!='#'){
 //					showStage(now);
-					int Br,Bc;
-//					cout << "--------------------------showStage\n";
-					for(int z = 0 ; z < r;z++){
-						for(int j = 0 ; j < c ; j++){
-//							cout << now.stage[z][j];
-							if(now.stage[z][j]=='B')
-								Br=z,Bc=j;
-						}
-//						cout << endl;
-					}
-//					cout << "--------------------------\n";
 					
 					for(int z = 0 ; z < 4 ;z++){
-						if(now.stage[Br+direction[z][0]][Bc+direction[z][1]]=='#')
-						if(now.stage[Br+direction[(z+1)%4][0]][Bc+direction[(z+1)%4][1]]=='#'){
+						if(mapp[now.Br+direction[z][0]][now.Bc+direction[z][1]]=='#')
+						if(mapp[now.Br+direction[(z+1)%4][0]][now.Bc+direction[(z+1)%4][1]]=='#'){
 							break;
-							break;	
+							break;
 						}
+					}
+					if(now.step>3 &&checkLoop4(now)){
+						break;
+						break;
 					}
 					
 					position temp=now;
@@ -166,24 +161,21 @@ int BFS(position nnow,position goal){
 					temp.y = now.y+direction[i][1];
 					
 					
-					if(now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='B'
-						&&(now.stage[now.x+2*direction[i][0]][now.y+2*direction[i][1]]=='.'
-						||now.stage[now.x+2*direction[i][0]][now.y+2*direction[i][1]]=='T')){
+					if( (now.x+direction[i][0])==now.Br && (now.y+direction[i][1])==now.Bc
+						&&(mapp[now.x+2*direction[i][0]][now.y+2*direction[i][1]]!='#')){
 						temp.act[temp.step++] = ccc[i+4];
-						temp.stage[now.x+direction[i][0]][now.y+direction[i][1]]='S';
-						temp.stage[now.x+2*direction[i][0]][now.y+2*direction[i][1]]='B';
-						temp.stage[now.x][now.y]='.';
+						
+						temp.Br = now.x+2*direction[i][0];
+						temp.Bc = now.y+2*direction[i][1];
+						
 						que.push(temp);
 					}
-					else if (now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='.'){
+					else if (mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='.'){
 						temp.act[temp.step++] = ccc[i];
-						temp.stage[now.x][now.y]='.';
-						temp.stage[now.x+direction[i][0]][now.y+direction[i][1]]='S';
 						que.push(temp);
 					}
 				
-//					if(now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='T'){
-					if(now.stage[goal.x][goal.y]=='B'){
+					if(now.Br==goal.x&&now.Bc==goal.y){
 						for(int i = 0 ; i <= now.step ; i++)
 							cout << now.act[i];
 						cout << "\nFOUND GOALLLL!!!!\n";
@@ -253,10 +245,36 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 
 7 11
 ###########
+#.........#
+#..T......#
+#....B....#
+#.........#
+#........S#
+###########
+
+7 11
+###########
 #T.....B..#
 #########.#
 #.........#
 #.#########
+#........S#
+###########
+
+15 11
+###########
+#..T....B.#
+#.........#
+#.........#
+#.........#
+#.........#
+#.........#
+#.........#
+#.........#
+#.........#
+#.........#
+#.........#
+#.........#
 #........S#
 ###########
 
@@ -278,6 +296,20 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 12 12
 ############
 #...T#..#S.#
+#..#...#...#
+##.#...#...#
+##.....#...#
+##.##..#...#
+##..###....#
+##..######.#
+#..........#
+##..#####B.#
+#.......#..#
+############
+
+12 12
+############
+#...T#..#S.#
 #..#...#.#.#
 ##.#...#.#.#
 ##.....#.#.#
@@ -285,7 +317,7 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 ##..###..#.#
 ##..######.#
 #..........#
-#########B.#
+##..#####B.#
 #.......#..#
 ############
 
@@ -299,14 +331,16 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 #...###..#.#
 ##..#..###.#
 #..........#
-#########B.#
+##.######B.#
 #..........#
 ############
+essssssssswNenWWWWWWWeeeeeesswwwwwwwnNNNNNNNwnEE
 
-
-10 15
+12 15
 ###############
 #.T........B..#
+#.............#
+#.............#
 #.............#
 #.............#
 #.............#
