@@ -10,7 +10,7 @@ typedef struct po{
 	char act[50];
 }position;
 position goal,now,start;
-queue<position>que;
+stack<position>que;
 int r,c;
 int direction[4][2] = {{0,-1},{1,0},{0,1},{-1,0}};
 // 0-> w
@@ -124,10 +124,11 @@ bool checkBox(position n){
 bool checkLoop4(position n){
 	return (n.act[n.step-1]+n.act[n.step-2]+n.act[n.step-3]+n.act[n.step-4])==('n'+'s'+'w'+'e');
 }
+
 int BFS(position nnow,position goal){
 //	cout << "welcome to BFS\n";
+	bool ok=true;
 	que.push(nnow); // add a start state
-	bool ok;
 	if(start.x == goal.x && start.y == goal.y){
 		return 0;
 	}
@@ -136,17 +137,17 @@ int BFS(position nnow,position goal){
 			return -1;	
 		} 
 		else{
-			position now = que.front();
+			position now = que.top();
+			ok = true;
 			que.pop();
 			
 			if(now.Br==goal.x&&now.Bc==goal.y){
 				for(int i = 0 ; i <= now.step ; i++)
 					cout << now.act[i];
 				cout << "\nFOUND GOALLLL!!!!\n";
-				return 1;
+//				return 1;
 			}
-			
-			ok = true;
+					
 			for(int z = 0 ; z < 4 ;z++){
 //				cout <<"yeah!\n";
 //				cout << mapp[now.Br+direction[z][0]][now.Bc+direction[z][1]] ;
@@ -156,36 +157,25 @@ int BFS(position nnow,position goal){
 					ok = false;
 				}
 			}
-			if(now.step>3 && checkLoop4(now)){
+			if(now.step>3 &&checkLoop4(now)){
 				ok = false;
 			}
-			if(ok == false) continue;	
+			if(ok == false) continue;
 			
-			
-			
+//			int ss;
+//			scanf("%d",&ss);
 			for(int i = 0 ; i < 4 ; i++){
-			
+				ok = true;
 				if(now.step==0 || (now.act[now.step-1] != zzz[i]))
 				if(now.step<50)
 				if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]!='#'){
 //					showStage(now);
 					
-					for(int z = 0 ; z < 4 ;z++){
-						if(mapp[now.Br+direction[z][0]][now.Bc+direction[z][1]]=='#')
-						if(mapp[now.Br+direction[(z+1)%4][0]][now.Bc+direction[(z+1)%4][1]]=='#'){
-							break;
-							break;
-						}
-					}
-					if(now.step>3 &&checkLoop4(now)){
-						break;
-						break;
-					}
+					
 					
 					position temp=now;
 					temp.x = now.x+direction[i][0];
 					temp.y = now.y+direction[i][1];
-					
 					
 					if( (now.x+direction[i][0])==now.Br && (now.y+direction[i][1])==now.Bc
 						&&(mapp[now.x+2*direction[i][0]][now.y+2*direction[i][1]]!='#')){
@@ -312,7 +302,6 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 ##..#...#..#
 ############
 
-
 12 12
 ############
 #...T#..#S.#
@@ -340,6 +329,7 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 ##..#####B.#
 #.......#..#
 ############
+
 
 12 12
 ############
