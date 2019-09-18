@@ -37,6 +37,7 @@ int main(){
 //	showMap();
 //	showStage(start);
 	cout << "BFS " << BFS(start,goal);
+	while(1);
 	return 0;
 }
 /////////////////////////////////////
@@ -69,7 +70,7 @@ void showMap(){
 	cout << "--------------------------\n";
 }
 void getPosition(){
-	cout << "-------------USE getPosition\n";
+//	cout << "-------------USE getPosition\n";
 	for(int i = 0 ; i < r;i++){
 		for(int j = 0 ; j < c ; j++){
 			if(mapp[i][j]=='T') goal.x = i , goal.y = j,mapp[i][j]='.';
@@ -78,14 +79,14 @@ void getPosition(){
 		}
 	}
 	start.step = 0;
-	cout << "goal :\n\tx: " << goal.x << endl;
-	cout << "\ty: " << goal.y << endl;
-	cout << "now start:\n\tx: "<< start.x << endl;
-	cout << "\ty: " << start.y << endl;
-	cout << "now box:\n\tBr: "<< start.Br << endl;
-	cout << "\tBc: " << start.Bc << endl;
-	
-	cout << "-------------END getPosition\n";
+//	cout << "goal :\n\tx: " << goal.x << endl;
+//	cout << "\ty: " << goal.y << endl;
+//	cout << "now start:\n\tx: "<< start.x << endl;
+//	cout << "\ty: " << start.y << endl;
+//	cout << "now box:\n\tBr: "<< start.Br << endl;
+//	cout << "\tBc: " << start.Bc << endl;
+//	
+//	cout << "-------------END getPosition\n";
 	
 }
 void showWent(){
@@ -263,6 +264,16 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 #.........#
 ###########
 
+8 8
+########
+#T#.#..#
+#......#
+#..B.#.#
+#......#
+#.####.#
+#.....S#
+########
+
 7 11
 ###########
 #.........#
@@ -281,16 +292,26 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 #........S#
 ###########
 
+7 11
+###########
+#T.#S.....#
+#.#.#B.####
+#.........# 
+#.######..#
+#.........#
+###########
+
+
 15 11
 ###########
-#..T....B.#
+#..T......#
 #.........#
 #.........#
 #.........#
 #.........#
 #.........#
 #.........#
-#.........#
+#.B.......#
 #.........#
 #.........#
 #.........#

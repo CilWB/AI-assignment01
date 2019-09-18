@@ -127,79 +127,88 @@ bool checkLoop4(position n){
 
 int BFS(position nnow,position goal){
 //	cout << "welcome to BFS\n";
-	bool ok=true;
-	que.push(nnow); // add a start state
+	bool ok;
 	if(start.x == goal.x && start.y == goal.y){
 		return 0;
 	}
-	while(1){
-		if(que.empty()){
-			return -1;	
-		} 
-		else{
-			position now = que.top();
-			ok = true;
-			que.pop();
-			
-			if(now.Br==goal.x&&now.Bc==goal.y){
-				for(int i = 0 ; i <= now.step ; i++)
-					cout << now.act[i];
-				cout << "\nFOUND GOALLLL!!!!\n";
-//				return 1;
-			}
-					
-			for(int z = 0 ; z < 4 ;z++){
-//				cout <<"yeah!\n";
-//				cout << mapp[now.Br+direction[z][0]][now.Bc+direction[z][1]] ;
-//				cout << mapp[now.Br+direction[(z+1)%4][0]][now.Bc+direction[(z+1)%4][1]] << endl;;
-				if(mapp[now.Br+direction[z][0]][now.Bc+direction[z][1]]=='#')
-				if(mapp[now.Br+direction[(z+1)%4][0]][now.Bc+direction[(z+1)%4][1]]=='#'){
+	int numAns = 0 ;
+	for(int depth = 1 ; depth < 10 ; depth++){
+
+		que.push(nnow); // add a start state
+		
+		while(1){
+			if(que.empty()){
+//				return -1;	
+//				continue;
+				break;
+			} 
+			else{
+				position now = que.top();
+				ok = true;
+				que.pop();
+				
+				if(now.Br==goal.x&&now.Bc==goal.y){
+					numAns++;
+					cout << "#" << numAns << "\tdepth-" << depth  <<": " ;
+					for(int i = 0 ; i <= now.step ; i++)
+						cout << now.act[i];
+//					cout << "\nFOUND GOALLLL!!!!";
+					cout <<endl;
+					return 1;
+					continue;
+				}
+						
+				for(int z = 0 ; z < 4 ;z++){
+					if(mapp[now.Br+direction[z][0]][now.Bc+direction[z][1]]=='#')
+					if(mapp[now.Br+direction[(z+1)%4][0]][now.Bc+direction[(z+1)%4][1]]=='#'){
+						ok = false;
+					}
+				}
+				if(now.step>3 &&checkLoop4(now)){
 					ok = false;
 				}
-			}
-			if(now.step>3 &&checkLoop4(now)){
-				ok = false;
-			}
-			if(ok == false) continue;
-			
-//			int ss;
-//			scanf("%d",&ss);
-			for(int i = 0 ; i < 4 ; i++){
-				ok = true;
-				if(now.step==0 || (now.act[now.step-1] != zzz[i]))
-				if(now.step<50)
-				if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]!='#'){
-//					showStage(now);
-					
-					
-					
-					position temp=now;
-					temp.x = now.x+direction[i][0];
-					temp.y = now.y+direction[i][1];
-					
-					if( (now.x+direction[i][0])==now.Br && (now.y+direction[i][1])==now.Bc
-						&&(mapp[now.x+2*direction[i][0]][now.y+2*direction[i][1]]!='#')){
-						temp.act[temp.step++] = ccc[i+4];
+				if(ok == false ) continue;
+				if(now.step > depth) continue;
+		//			int ss;
+		//			scanf("%d",&ss);
+				for(int i = 0 ; i < 4 ; i++){
+					ok = true;
+					if(now.step==0 || (now.act[now.step-1] != zzz[i]))
+					if(now.step<50)
+					if(mapp[now.x+direction[i][0]][now.y+direction[i][1]]!='#'){
+//							showStage(now);
 						
-						temp.Br = now.x+2*direction[i][0];
-						temp.Bc = now.y+2*direction[i][1];
 						
-						que.push(temp);
-					}
-					else if (mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='.'){
-						temp.act[temp.step++] = ccc[i];
-						que.push(temp);
-					}
-				
+						
+						position temp=now;
+						temp.x = now.x+direction[i][0];
+						temp.y = now.y+direction[i][1];
+						
+						if( (now.x+direction[i][0])==now.Br && (now.y+direction[i][1])==now.Bc
+							&&(mapp[now.x+2*direction[i][0]][now.y+2*direction[i][1]]!='#')){
+							temp.act[temp.step++] = ccc[i+4];
+							
+							temp.Br = now.x+2*direction[i][0];
+							temp.Bc = now.y+2*direction[i][1];
+							
+							que.push(temp);
+						}
+						else if (mapp[now.x+direction[i][0]][now.y+direction[i][1]]=='.'){
+							temp.act[temp.step++] = ccc[i];
+							que.push(temp);
+						}
 					
+						
+						
+					}
 					
 				}
-				
 			}
-		}
-	} // end while(1)
+		} // end while(1)
 	
 	
+	} // for depth
+	return (numAns==0)?-1:numAns;
 }
 
 /* MAPP:

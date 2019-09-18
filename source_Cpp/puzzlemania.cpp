@@ -117,10 +117,9 @@ int BFS(position nnow,position goal){
 	if(start.x == goal.x && start.y == goal.y){
 		return 0;
 	}
-	 
-//	for(int i = 0 ; i< r;i++)
-//		for(int j = 0 ; j <c;j++)
-//			went[i][j] = 0;
+	for(int i = 0 ; i< r;i++)
+		for(int j = 0 ; j <c;j++)
+			went[i][j] = 0;
 	while(1){
 		if(que.empty()){
 			return -1;	
@@ -129,7 +128,8 @@ int BFS(position nnow,position goal){
 			position now = que.front();
 			que.pop();
 //			went[now.x][now.y] = 1;
-			
+//			showWent();			
+			showStage(now);
 			for(int i = 0 ; i < 4 ; i++){
 //				if(now.step==0 || now.stage[now.x+direction[i][0]][now.y+direction[i][1]]!='S')
 				
@@ -138,9 +138,8 @@ int BFS(position nnow,position goal){
 				||now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='T'
 				||now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='B'
 				||now.stage[now.x+direction[i][0]][now.y+direction[i][1]]=='S'){
-//					showWent();
+
 					
-//					showStage(now);
 					int Br,Bc;
 //					cout << "--------------------------showStage\n";
 					for(int z = 0 ; z < r;z++){
@@ -245,8 +244,8 @@ wwwWWWWWeeeeeesswwwwwwwnNN
 7 11
 ###########
 #.........#
-#..T...####
-#....B...S#
+#.BT...####
+#....S....#
 #.........#
 #.........#
 ###########
