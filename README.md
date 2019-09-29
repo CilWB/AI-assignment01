@@ -1,2 +1,3 @@
 AI-assignment01
-some (very small) part of SOKOBAN game problem
+Solving SOKOBAN game problem
+using BFS and IDS
